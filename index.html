@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coding challenge</title>
+    <style>
+      table {
+        border: 1px solid black;
+      }
+
+      .user {
+        margin: 30px auto;
+      }
+
+      .user tbody tr:hover {
+        cursor: pointer;
+        background-color: rgb(114, 117, 117);
+      }
+
+      .post {
+        margin: 0px auto;
+      }
+
+      .post tbody tr:hover {
+        background-color: rgb(114, 117, 117);
+      }
+    </style>
+  </head>
+  <body>
+    <table class="user" border></table>
+    <table class="post" border></table>
+  </body>
+  <script type="text/javascript">
+    window.onload = getUsers();
+    function getUsers() {
+      fetch("https://jsonplaceholder.typicode.com/users")
+        .then((response) => response.json())
+        .then((json) => {
+          var output = `<thead>
+        <tr>
+          <th>id</th>
+          <th>username</th>
+          <th>User</th>
+          <th>Website</th>
+          <th>Email</th>
+          <th>Company</th>
+        </tr>
+      </thead>`;
+          json.forEach((e) => {
+            output += `<tr onClick="show(${e.id})">
+                <td>${e.id}</td>
+                <td>${e.username}</td>
+                <td>${e.name}</td>
+                <td>${e.website}</td>
+                <td>${e.email}</td>
+                <td>${e.company.name}</td>
+                <tr/>`;
+          });
+          document.querySelector(".user").innerHTML = output;
+        });
+    }
+
+    function show(id) {
+      fetch(`https://jsonplaceholder.typicode.com/posts/?userId=${id}`)
+        .then((response) => response.json())
+        .then((json) => {
+          var output1 = `<thead>
+        <tr>
+          <th>id</th>
+          <th>Title</th>
+          <th>Body</th>
+        </tr>
+      </thead>`;
+          json.forEach((e) => {
+            output1 += `<tr"><td>${e.id}</td><td>${e.title}</td><td>${e.body}</td><tr/>`;
+          });
+          document.querySelector(".post").innerHTML = output1;
+        });
+    }
+  </script>
+</html>
